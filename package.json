@@ -1,6 +1,6 @@
 {
   "name": "is-inside-git",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Check if a file or directory is inside a git repository",
   "keywords": [
     "is",
