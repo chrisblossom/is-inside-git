@@ -12,6 +12,8 @@
   ],
   "license": "MIT",
   "private": false,
+  "repository": "chrisblossom/is-inside-git",
+  "homepage": "https://github.com/chrisblossom/is-inside-git",
   "author": "Chris Blossom",
   "engines": {
     "node": ">=8.9.0"
