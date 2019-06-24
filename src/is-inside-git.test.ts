@@ -1,28 +1,25 @@
 import path from 'path';
-import execa from 'execa';
+import { sync as execaSync } from 'execa';
 import { TempSandbox } from 'temp-sandbox';
 import { isInsideGit, isInsideGitSync } from './is-inside-git';
 
 const sandbox = new TempSandbox({ randomDir: true });
 
-async function initializeGit(dir: string = process.cwd()) {
+function initializeGit(dir: string = process.cwd()) {
     const absolutePath = path.resolve(dir);
 
-    await execa('git', ['init'], { cwd: absolutePath });
+    execaSync('git', ['init'], { cwd: absolutePath });
 }
 
-beforeEach(async () => {
+beforeEach(() => {
     process.chdir(sandbox.dir);
-    await sandbox.clean();
+    sandbox.cleanSync();
 });
 
-afterAll(async () => {
-    await sandbox.destroySandbox();
+afterAll(() => {
+    sandbox.destroySandboxSync();
 });
 
-/*
-
- */
 describe.each`
     pathname
     ${undefined}
@@ -34,27 +31,27 @@ describe.each`
     ${sandbox.path.resolve('file.js')}
     ${sandbox.path.resolve('nested/inside.js')}
 `(`$pathname`, ({ pathname }) => {
-    beforeEach(async () => {
+    beforeEach(() => {
         if (pathname && pathname !== process.cwd()) {
             const parsed = path.parse(pathname);
 
             const isFile = parsed.ext !== '';
 
             if (isFile === true) {
-                await sandbox.createFile(pathname);
+                sandbox.createFileSync(pathname);
 
                 return;
             }
 
-            await sandbox.createFile(pathname);
+            sandbox.createFileSync(pathname);
         }
     });
 
     describe('true', () => {
         const expected = true;
 
-        beforeEach(async () => {
-            await initializeGit(sandbox.dir);
+        beforeEach(() => {
+            initializeGit(sandbox.dir);
         });
 
         test('async', async () => {
