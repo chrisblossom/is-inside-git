@@ -6,6 +6,9 @@ import path from 'path';
 import pathType from 'path-type';
 import execa, { sync as execaSync } from 'execa';
 
+const gitCommand = 'git';
+const gitCommandArgs = ['rev-parse', '--is-inside-work-tree'];
+
 async function isInsideGit(pathname: string = process.cwd()): Promise<boolean> {
     const absolutePath = path.resolve(pathname);
 
@@ -17,7 +20,7 @@ async function isInsideGit(pathname: string = process.cwd()): Promise<boolean> {
             : path.resolve(path.dirname(pathname));
 
     try {
-        await execa('git', ['rev-parse', '--is-inside-work-tree'], {
+        await execa(gitCommand, gitCommandArgs, {
             cwd: nearestDirectory,
         });
 
@@ -36,7 +39,7 @@ function isInsideGitSync(dir: string = process.cwd()): boolean {
         isDirectory === true ? absolutePath : path.resolve(path.dirname(dir));
 
     try {
-        execaSync('git', ['rev-parse', '--is-inside-work-tree'], {
+        execaSync(gitCommand, gitCommandArgs, {
             cwd: nearestDirectory,
         });
 
